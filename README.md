@@ -21,7 +21,7 @@ Inspired by [Typeless](https://www.typeless.com/).
 
 ### 1. Build & Run
 
-1. Download **Xcode** from the [App Store](https://apps.apple.com/app/xcode/id497799835) (requires macOS 14.0+)
+1. Download **Xcode** from the [App Store](https://apps.apple.com/app/xcode/id497799835)
 2. Clone this repo:
    ```bash
    git clone https://github.com/scinttt/open-typeless-formac.git

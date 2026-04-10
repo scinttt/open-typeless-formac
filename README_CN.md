@@ -21,7 +21,7 @@
 
 ### 1. 编译运行
 
-1. 从 [App Store](https://apps.apple.com/app/xcode/id497799835) 下载 **Xcode**（需要 macOS 14.0+）
+1. 从 [App Store](https://apps.apple.com/app/xcode/id497799835) 下载 **Xcode**
 2. 克隆本仓库：
    ```bash
    git clone https://github.com/scinttt/open-typeless-formac.git
