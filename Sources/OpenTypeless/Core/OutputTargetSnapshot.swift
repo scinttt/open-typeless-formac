@@ -63,14 +63,13 @@ struct OutputTargetSnapshot {
         let result = AXUIElementCopyAttributeValue(element, kAXRoleAttribute as CFString, &role)
         guard result == .success, let roleStr = role as? String else { return false }
 
-        let textRoles = [
-            kAXTextFieldRole, kAXTextAreaRole, kAXComboBoxRole,
-            "AXWebArea", "AXSearchField",
-            "AXStaticText", "AXScrollArea", "AXGroup",
+        // Strict text input roles only — no AXWebArea/AXGroup (too broad, causes false positives)
+        let strictTextRoles = [
+            kAXTextFieldRole, kAXTextAreaRole, kAXComboBoxRole, "AXSearchField",
         ]
+        if strictTextRoles.contains(roleStr) { return true }
 
-        if textRoles.contains(roleStr) { return true }
-
+        // For other roles, check if the element is actually editable
         var settable: DarwinBoolean = false
         let isSettable = AXUIElementIsAttributeSettable(element, kAXValueAttribute as CFString, &settable)
         if isSettable == .success && settable.boolValue { return true }

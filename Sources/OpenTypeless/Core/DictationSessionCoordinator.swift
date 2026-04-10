@@ -112,9 +112,11 @@ final class DictationSessionCoordinator: ObservableObject {
         overlay.dismiss()
         lastTestResult = transcribedText
 
-        guard let snapshot = outputSnapshot else {
+        // Skip insertion if focused app is ourselves (settings test area)
+        let myPID = ProcessInfo.processInfo.processIdentifier
+        guard let snapshot = outputSnapshot, snapshot.appPID != myPID else {
             appState.status = .idle
-            popupController.show(text: transcribedText)
+            if outputSnapshot == nil { popupController.show(text: transcribedText) }
             return
         }
 

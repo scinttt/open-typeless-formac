@@ -13,19 +13,26 @@ enum InsertionStrategy {
     /// Insert text using the best available method, falling back through layers.
     @MainActor
     static func insert(text: String, snapshot: OutputTargetSnapshot) async -> InsertionResult {
-        // Check if there's a text input target
-        if snapshot.focusedElement != nil && snapshot.hasTextInput {
+        if snapshot.hasTextInput {
+            // Confident there's a real text input — paste directly
             let pasted = await clipboardPaste(text: text)
             if pasted {
                 return .insertedViaClipboard
             }
         }
 
-        // No text input — show popup with copy button
+        if snapshot.focusedElement != nil {
+            // Not sure if it's a text input (e.g. Terminal, browser) — paste AND show popup
+            await clipboardPaste(text: text)
+            return .showPopup(text)
+        }
+
+        // Nothing focused — just show popup
         return .showPopup(text)
     }
 
     /// Paste via clipboard with original content preservation.
+    @discardableResult
     private static func clipboardPaste(text: String) async -> Bool {
         let pasteboard = NSPasteboard.general
         // Save original clipboard
