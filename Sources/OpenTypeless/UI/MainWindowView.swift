@@ -318,12 +318,19 @@ struct APITabView: View {
             }
 
             GroupBox(l.apiKey) {
-                SecureField(l.apiKey, text: $apiKey)
-                    .textFieldStyle(.roundedBorder)
-                    .onChange(of: apiKey) { _, newValue in
-                        TranscriptionService.apiKey = newValue
+                VStack(alignment: .leading, spacing: 4) {
+                    SecureField(l.apiKey, text: $apiKey)
+                        .textFieldStyle(.roundedBorder)
+                        .onChange(of: apiKey) { _, newValue in
+                            TranscriptionService.apiKey = newValue
+                        }
+                    if !TranscriptionService.apiKey.isEmpty && apiKey.isEmpty {
+                        Text("API key is saved. Enter a new one to replace it.")
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
                     }
-                    .padding(8)
+                }
+                .padding(8)
             }
 
             GroupBox(l.model) {

@@ -11,27 +11,33 @@ Inspired by [Typeless](https://www.typeless.com/).
 - **Toggle-to-talk**: Press hotkey to start, press again to stop (no need to hold)
 - **Auto-insert**: Transcribed text is pasted into the focused input field via Cmd+V
 - **Popup fallback**: If no text field is focused, a floating panel shows the result with a Copy button
-- **Progress overlay**: A bottom-center HUD shows recording/transcribing status with real-time audio level
+- **Progress overlay**: A bottom-center overlay shows recording/transcribing status with audio level
 - **Double-tap cancel**: Quickly press the hotkey twice to cancel recording
 - **Multiple models**: Choose between gpt-4o-mini-transcribe, gpt-4o-transcribe, or whisper-1
 - **Custom API endpoint**: Works with any OpenAI-compatible API (Groq, Together AI, etc.)
+- **Chinese/English UI**: Switch UI language in Settings
 
 ## Quick Start
 
 ### 1. Build
 
-Download Xcode from the App Store if you don't have it.
+Requires macOS 14.0+, Xcode 16.0+, and [XcodeGen](https://github.com/yonaskolb/XcodeGen).
 
 ```bash
 brew install xcodegen  # if not installed
 git clone https://github.com/scinttt/open-typeless-formac.git
 cd open-typeless-formac
 xcodegen generate
+open OpenTypeless.xcodeproj
 ```
 
-Open, build, and run from Xcode (Cmd+R).
+Build and run from Xcode (Cmd+R).
 
-### 2. Grant Permissions
+### 2. Find the App
+
+After build & run, look for the **microphone icon (🎙) in the top-right menu bar** — that's open-typeless. Click it to access Settings.
+
+### 3. Grant Permissions
 
 On first launch, you'll be prompted to grant:
 - **Microphone** — for recording your voice
@@ -39,26 +45,30 @@ On first launch, you'll be prompted to grant:
 
 > After each build, you need to grant Accessibility again: go to System Settings > Privacy & Security > Accessibility, remove the old entry with the minus (-) button, then click "Grant Access" in the app to re-add it.
 
-### 3. Configure API Key
+### 4. Configure API Key
 
-Open Settings from the menu bar icon, then:
+Click the menu bar icon → **Settings** → go to the **API** tab:
 - **Provider**: Choose "OpenAI" or "Custom" (for OpenAI-compatible endpoints)
 - **API Key**: Enter your OpenAI API key (`sk-...`)
 - **Model**: Choose a transcription model (default: `gpt-4o-mini-transcribe`)
 
 You can get an OpenAI API key at [platform.openai.com/api-keys](https://platform.openai.com/api-keys).
 
-### 4. Start Using
+### 5. Start Using
+
+> **⚠️ Default Hotkey: Right Option (Alt) key**
+>
+> This is the key to the left of the arrow keys on most keyboards.
 
 | Action | How |
 |--------|-----|
-| **Start recording** | Press **Right Option (Alt)** — this is the default hotkey |
+| **Start recording** | Press **Right Option (Alt)** |
 | **Stop & transcribe** | Press **Right Option (Alt)** again |
 | **Cancel recording** | Double-press **Right Option (Alt)** quickly |
 
 The transcribed text will be automatically inserted into whatever text field your cursor is in. If no text field is focused, a popup appears with a Copy button.
 
-> The hotkey can be customized in Settings. Click "Click to record" next to the Transcribe field, then press your desired key combo.
+> The hotkey can be customized in Settings → Hotkeys tab. Click "Click to record" then press your desired key or key combo.
 
 ## Pricing Estimate
 
@@ -85,7 +95,7 @@ open-typeless uses the `gpt-4o-mini-transcribe` model by default.
 |-------|-----------|
 | App | Swift + SwiftUI + AppKit (MenuBarExtra + NSWindow) |
 | Audio | AVAudioRecorder (M4A, 44.1kHz mono) |
-| Transcription | OpenAI-compatible Whisper API |
+| Transcription | [MacPaw/OpenAI](https://github.com/MacPaw/OpenAI) Swift SDK |
 | Text insertion | Clipboard + simulated Cmd+V |
 | Hotkeys | CGEvent tap (toggle mode, modifier-only key support) |
 
@@ -93,11 +103,11 @@ open-typeless uses the `gpt-4o-mini-transcribe` model by default.
 
 | Problem | Solution |
 |---------|----------|
-| Hotkey doesn't work | Check Accessibility permission; toggle it off/on in System Settings |
-| "API key not configured" | Enter your key in Settings (menu bar icon > Settings) |
+| Hotkey doesn't work | Check Accessibility permission; remove old entry and re-add in System Settings |
+| "API key not configured" | Enter your key in Settings → API tab |
 | No audio input | Check System Settings > Sound > Input; make sure a microphone is selected |
 | Text not inserting | Click into a text field before stopping the recording |
-| App freezes computer | Report an issue — this may be related to CGEvent tap conflicts |
+| Can't find the app | Look for the microphone icon in the top-right menu bar |
 
 ## License
 
