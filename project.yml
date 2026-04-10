@@ -24,8 +24,7 @@ targets:
       - package: OpenAI
     sources:
       - path: Sources/OpenTypeless
-      - path: Resources/Assets.xcassets
-        type: folder
+      - path: Resources
     info:
       path: Sources/OpenTypeless/Info.plist
       properties:
