@@ -1,4 +1,4 @@
-# open-typeless
+# open-typeless-formac
 
 [English](README.md) | [中文](README_CN.md)
 
