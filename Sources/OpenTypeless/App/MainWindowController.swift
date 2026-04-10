@@ -28,7 +28,7 @@ final class MainWindowController {
         let window = NSWindow(contentViewController: hostingController)
         window.title = "OpenTypeless"
         window.styleMask = [.titled, .closable, .miniaturizable]
-        window.setContentSize(NSSize(width: 500, height: 580))
+        window.setContentSize(NSSize(width: 560, height: 400))
         window.center()
         window.isReleasedWhenClosed = false
         window.makeKeyAndOrderFront(nil)

@@ -50,12 +50,13 @@ enum HotkeyStore {
     }
 
     static func loadConfig() -> HotkeyManager.HotkeyConfig? {
-        guard let t = loadTranscribe(), let tr = loadTranslate() else { return nil }
+        guard let t = loadTranscribe() else { return nil }
+        let tr = loadTranslate()
         return HotkeyManager.HotkeyConfig(
             transcribeKeyCode: t.keyCode,
             transcribeModifiers: t.modifiers,
-            translateKeyCode: tr.keyCode,
-            translateModifiers: tr.modifiers
+            translateKeyCode: tr?.keyCode ?? CGKeyCode(kVK_ANSI_D),
+            translateModifiers: tr?.modifiers ?? .maskControl
         )
     }
 

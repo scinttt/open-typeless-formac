@@ -55,16 +55,24 @@ struct ShortcutRecorderView: View {
         errorMessage = nil
         onRecordStart?()
 
-        monitor = NSEvent.addLocalMonitorForEvents(matching: [.keyDown]) { event in
+        monitor = NSEvent.addLocalMonitorForEvents(matching: [.keyDown, .flagsChanged]) { event in
             let keyCode = CGKeyCode(event.keyCode)
             let flags = CGEventFlags(rawValue: UInt64(event.modifierFlags.rawValue))
             let relevantFlags: CGEventFlags = [.maskAlternate, .maskControl, .maskShift, .maskCommand]
             let pressed = flags.intersection(relevantFlags)
 
-            shortcut = StoredShortcut(keyCode: keyCode, modifiers: pressed)
+            if event.type == .flagsChanged {
+                // Single modifier key (e.g. Right Option) — only capture on press (flag set), not release
+                guard !pressed.isEmpty else { return nil }
+                shortcut = StoredShortcut(keyCode: keyCode, modifiers: CGEventFlags(rawValue: 0))
+            } else {
+                // Regular key (with or without modifiers)
+                shortcut = StoredShortcut(keyCode: keyCode, modifiers: pressed)
+            }
+
             errorMessage = nil
             stopRecording()
-            return nil // swallow the event
+            return nil
         }
     }
 

@@ -46,9 +46,15 @@ final class TranscriptionService {
         let key = Self.apiKey
         guard !key.isEmpty else { throw TranscriptionError.noAPIKey }
 
-        let client = buildClient(apiKey: key)
-        let audioData = try Data(contentsOf: audioURL)
+        let audioData: Data
+        do {
+            audioData = try Data(contentsOf: audioURL)
+        } catch {
+            throw TranscriptionError.failed(error)
+        }
+
         let fileName = audioURL.lastPathComponent
+        let client = buildClient(apiKey: key)
 
         let query = AudioTranscriptionQuery(
             file: audioData,
@@ -56,16 +62,27 @@ final class TranscriptionService {
             model: .init(Self.model)
         )
 
+        // Wrap SDK call to catch any unexpected crashes
+        let text: String
         do {
             let result = try await client.audioTranscriptions(query: query)
-            let text = result.text.trimmingCharacters(in: .whitespacesAndNewlines)
-            guard !text.isEmpty else { throw TranscriptionError.noResult }
-            return text
-        } catch let error as TranscriptionError {
-            throw error
+            text = result.text.trimmingCharacters(in: .whitespacesAndNewlines)
         } catch {
-            throw TranscriptionError.failed(error)
+            // SDK may throw various errors (auth, network, decoding)
+            let message: String
+            if let urlError = error as? URLError {
+                message = "Network error: \(urlError.localizedDescription)"
+            } else {
+                message = "\(error)"
+            }
+            throw TranscriptionError.failed(
+                NSError(domain: "TranscriptionService", code: -1,
+                        userInfo: [NSLocalizedDescriptionKey: message])
+            )
         }
+
+        guard !text.isEmpty else { throw TranscriptionError.noResult }
+        return text
     }
 
     private func buildClient(apiKey: String) -> OpenAI {
@@ -76,9 +93,9 @@ final class TranscriptionService {
             let config = OpenAI.Configuration(
                 token: apiKey,
                 host: Self.customHost,
-                basePath: Self.customBasePath,
                 port: 443,
-                scheme: "https"
+                scheme: "https",
+                basePath: Self.customBasePath
             )
             return OpenAI(configuration: config)
         }
