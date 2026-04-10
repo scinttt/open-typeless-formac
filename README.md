@@ -20,8 +20,6 @@ Inspired by [Typeless](https://www.typeless.com/).
 
 ### 1. Build
 
-Requires macOS 14.0+, Xcode 16.0+, and [XcodeGen](https://github.com/yonaskolb/XcodeGen).
-
 ```bash
 brew install xcodegen  # if not installed
 git clone https://github.com/scinttt/open-typeless-formac.git
