@@ -21,11 +21,8 @@ enum InsertionStrategy {
             }
         }
 
-        if snapshot.focusedElement != nil {
-            // Not sure if it's a text input (e.g. Terminal, browser) — paste AND show popup
-            await clipboardPaste(text: text)
-            return .showPopup(text)
-        }
+        // Not sure if it's a text input — just show popup, don't blindly paste
+
 
         // Nothing focused — just show popup
         return .showPopup(text)

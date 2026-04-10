@@ -64,9 +64,9 @@ final class HotkeyStoreTests: XCTestCase {
         XCTAssertEqual(shortcut3.displayString, "⌘R")
     }
 
-    func testIsValidRequiresModifier() {
+    func testIsValidAcceptsAnyKey() {
         let noModifier = StoredShortcut(keyCode: 1, modifiers: CGEventFlags(rawValue: 0))
-        XCTAssertFalse(noModifier.isValid)
+        XCTAssertTrue(noModifier.isValid)
 
         let withModifier = StoredShortcut(keyCode: 1, modifiers: .maskCommand)
         XCTAssertTrue(withModifier.isValid)

@@ -1,9 +1,15 @@
 import XCTest
 @testable import OpenTypeless
 
-@MainActor
 final class TranscriptionServiceTests: XCTestCase {
-    func testTranscribeWithoutModelThrows() async {
+    func testTranscribeWithoutAPIKeyThrows() async {
+        let original = TranscriptionService.apiKey
+        defer { TranscriptionService.apiKey = original }
+
+        // Clear all sources of API key
+        UserDefaults.standard.removeObject(forKey: "apiKey")
+        TranscriptionService.apiKey = ""
+
         let service = TranscriptionService()
         let fakeURL = FileManager.default.temporaryDirectory.appendingPathComponent("fake.m4a")
         FileManager.default.createFile(atPath: fakeURL.path, contents: Data(), attributes: nil)
@@ -17,7 +23,7 @@ final class TranscriptionServiceTests: XCTestCase {
         }
     }
 
-    func testDefaultModelIsSmall() {
-        XCTAssertEqual(TranscriptionService.modelName, "small")
+    func testDefaultModel() {
+        XCTAssertEqual(TranscriptionService.model, "gpt-4o-mini-transcribe")
     }
 }

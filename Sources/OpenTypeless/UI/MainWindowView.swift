@@ -321,9 +321,6 @@ struct APITabView: View {
                 VStack(alignment: .leading, spacing: 4) {
                     SecureField(l.apiKey, text: $apiKey)
                         .textFieldStyle(.roundedBorder)
-                        .onChange(of: apiKey) { _, newValue in
-                            TranscriptionService.apiKey = newValue
-                        }
                     if !TranscriptionService.apiKey.isEmpty && apiKey.isEmpty {
                         Text("API key is saved. Enter a new one to replace it.")
                             .font(.caption2)
@@ -359,7 +356,8 @@ struct APITabView: View {
     }
 
     private func load() {
-        apiKey = TranscriptionService.apiKey
+        // Only load key from UserDefaults, not env var (avoid persisting env secrets)
+        apiKey = UserDefaults.standard.string(forKey: "apiKey") ?? ""
         provider = TranscriptionService.provider
         customHost = TranscriptionService.customHost
         customBasePath = TranscriptionService.customBasePath

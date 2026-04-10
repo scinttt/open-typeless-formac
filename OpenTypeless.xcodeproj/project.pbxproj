@@ -30,8 +30,6 @@
 		C66AD81E2764765174F65B24 /* ProgressOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCC095ED5BE2645B195A6F3A /* ProgressOverlay.swift */; };
 		CBC03266564DC19E434EB661 /* ShortcutRecorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D153D1A5BE9EDF7A543A36 /* ShortcutRecorderView.swift */; };
 		D093CA63AF7678BE2B1CFC58 /* HotkeyStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7DB340E5942201AEF2DC10E /* HotkeyStoreTests.swift */; };
-		D4EF3A132718A5ED29C2B448 /* TranslationServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587D4A2E5FCB17200ABED790 /* TranslationServiceTests.swift */; };
-		D76D14965C24C95F8D745C52 /* TranslationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A7F6256D06AFFC5A3F3526 /* TranslationService.swift */; };
 		EE1A1F5A677EB5D0B84B5F71 /* DictationSessionCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A55BB38F0DED7BB7F55BDFB /* DictationSessionCoordinatorTests.swift */; };
 		F020B687087957DDF840D7B0 /* TranscriptionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF248BD2A796C8D341245E2D /* TranscriptionService.swift */; };
 		FB0374BC4E42085DFCA75A72 /* InsertionStrategyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 796F4D210BFE2C15DDE783BD /* InsertionStrategyTests.swift */; };
@@ -54,12 +52,10 @@
 		26793EC7ECE0C478A178ECC9 /* AppStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStateTests.swift; sourceTree = "<group>"; };
 		2D22EB1E3CFB846C07918331 /* HotkeyManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeyManagerTests.swift; sourceTree = "<group>"; };
 		2FEBDAF7F11D5286DA0B26D8 /* OpenTypelessTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OpenTypelessTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		33A7F6256D06AFFC5A3F3526 /* TranslationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationService.swift; sourceTree = "<group>"; };
 		38D7A142FE57E8DC4A27DE2F /* InsertionStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsertionStrategy.swift; sourceTree = "<group>"; };
 		421E15634FC1D9BC346350AC /* AudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
 		52862BA91FB4BCD7E1BD2173 /* HotkeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeyManager.swift; sourceTree = "<group>"; };
 		5796BD42C96BBC050ECA210A /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
-		587D4A2E5FCB17200ABED790 /* TranslationServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationServiceTests.swift; sourceTree = "<group>"; };
 		5C5E0B7101FE0F65E18809B0 /* PermissionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionManager.swift; sourceTree = "<group>"; };
 		62DDFAF0114BF7FD01DB87E3 /* AccessibilityHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityHelper.swift; sourceTree = "<group>"; };
 		6A8F4EC1F9358BA1BD30539E /* AudioRecorderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorderTests.swift; sourceTree = "<group>"; };
@@ -142,7 +138,6 @@
 			isa = PBXGroup;
 			children = (
 				FF248BD2A796C8D341245E2D /* TranscriptionService.swift */,
-				33A7F6256D06AFFC5A3F3526 /* TranslationService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -183,7 +178,6 @@
 				D7DB340E5942201AEF2DC10E /* HotkeyStoreTests.swift */,
 				796F4D210BFE2C15DDE783BD /* InsertionStrategyTests.swift */,
 				8D43E926297E99334837F80E /* TranscriptionServiceTests.swift */,
-				587D4A2E5FCB17200ABED790 /* TranslationServiceTests.swift */,
 			);
 			name = OpenTypelessTests;
 			path = Tests/OpenTypelessTests;
@@ -336,7 +330,6 @@
 				6888C94349BA93E537CA5F0F /* ResultPopup.swift in Sources */,
 				CBC03266564DC19E434EB661 /* ShortcutRecorderView.swift in Sources */,
 				F020B687087957DDF840D7B0 /* TranscriptionService.swift in Sources */,
-				D76D14965C24C95F8D745C52 /* TranslationService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -351,7 +344,6 @@
 				D093CA63AF7678BE2B1CFC58 /* HotkeyStoreTests.swift in Sources */,
 				FB0374BC4E42085DFCA75A72 /* InsertionStrategyTests.swift in Sources */,
 				B254BF91918A26ADEEB2EFA1 /* TranscriptionServiceTests.swift in Sources */,
-				D4EF3A132718A5ED29C2B448 /* TranslationServiceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
