@@ -3,3 +3,18 @@ CLAUDE.md
 docs/
 TBD.md
 NOW.md
+.now_md.cooldown
+.now_md.lock
+
+# Xcode
+DerivedData/
+*.xcuserstate
+xcuserdata/
+*.xcworkspace/xcuserdata/
+
+# Build
+.build/
+build/
+
+# macOS
+.DS_Store

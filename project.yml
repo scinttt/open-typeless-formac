@@ -1,0 +1,70 @@
+name: OpenTypeless
+options:
+  bundleIdPrefix: com.scinttt
+  deploymentTarget:
+    macOS: "14.0"
+  xcodeVersion: "16.0"
+  generateEmptyDirectories: true
+
+settings:
+  base:
+    SWIFT_VERSION: "5.10"
+    MACOSX_DEPLOYMENT_TARGET: "14.0"
+
+packages:
+  WhisperKit:
+    url: https://github.com/argmaxinc/WhisperKit.git
+    from: "0.9.0"
+
+targets:
+  OpenTypeless:
+    type: application
+    platform: macOS
+    dependencies:
+      - package: WhisperKit
+    sources:
+      - path: Sources/OpenTypeless
+    resources:
+      - path: Resources/Assets.xcassets
+    info:
+      path: Sources/OpenTypeless/Info.plist
+      properties:
+        NSMicrophoneUsageDescription: "OpenTypeless needs microphone access to record your voice for speech-to-text transcription."
+        LSUIElement: true
+    entitlements:
+      path: Sources/OpenTypeless/OpenTypeless.entitlements
+      properties:
+        com.apple.security.app-sandbox: false
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.scinttt.open-typeless
+        PRODUCT_NAME: OpenTypeless
+        ENABLE_HARDENED_RUNTIME: true
+        LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - "@executable_path/../Frameworks"
+
+  OpenTypelessTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - path: Tests/OpenTypelessTests
+    dependencies:
+      - target: OpenTypeless
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.scinttt.open-typeless-tests
+        GENERATE_INFOPLIST_FILE: true
+
+schemes:
+  OpenTypeless:
+    build:
+      targets:
+        OpenTypeless: all
+        OpenTypelessTests: [test]
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - OpenTypelessTests
