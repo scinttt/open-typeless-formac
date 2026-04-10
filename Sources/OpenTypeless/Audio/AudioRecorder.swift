@@ -93,7 +93,7 @@ final class AudioRecorder: NSObject, AVAudioRecorderDelegate {
 
     /// Get current audio level (0.0 - 1.0). Call periodically during recording.
     func currentLevel() -> Float {
-        guard let rec = recorder, isRecording else { return 0 }
+        guard let rec = recorder, isRecording, rec.isRecording else { return 0 }
         rec.updateMeters()
         let dB = rec.averagePower(forChannel: 0) // -160 to 0
         let normalized = max(0, (dB + 50) / 50) // map -50...0 dB to 0...1

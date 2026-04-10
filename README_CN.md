@@ -1,4 +1,4 @@
-# open-typeless
+# open-typeless-formac
 
 [English](README.md) | [中文](README_CN.md)
 
@@ -20,6 +20,8 @@
 
 ### 1. 编译
 
+如果没有安装 Xcode，请先从 App Store 下载。
+
 需要 macOS 14.0+、Xcode 16.0+、[XcodeGen](https://github.com/yonaskolb/XcodeGen)。
 
 ```bash
@@ -27,10 +29,9 @@ brew install xcodegen  # 如果没装
 git clone https://github.com/scinttt/open-typeless-formac.git
 cd open-typeless-formac
 xcodegen generate
-open OpenTypeless.xcodeproj
 ```
 
-在 Xcode 中编译运行（Cmd+R）。
+在 Xcode 中打开、编译并运行（Cmd+R）。
 
 ### 2. 授权权限
 
@@ -98,6 +99,7 @@ OpenAI API key 获取地址：[platform.openai.com/api-keys](https://platform.op
 | "API key not configured" | 在设置中输入 API key（菜单栏图标 > Settings） |
 | 没有音频输入 | 检查系统设置 > 声音 > 输入，确保选择了麦克风 |
 | 文字没有插入 | 停止录音前先点击目标输入框 |
+| 应用卡死电脑 | 请提交 issue — 可能与 CGEvent tap 冲突有关 |
 
 ## 许可证
 
