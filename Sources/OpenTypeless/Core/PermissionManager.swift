@@ -13,11 +13,13 @@ final class PermissionManager: ObservableObject {
     }
 
     private var accessibilityTimer: Timer?
+    private var microphoneTimer: Timer?
 
     func checkAll() {
         checkMicrophone()
         checkAccessibility()
         startAccessibilityPolling()
+        startMicrophonePolling()
     }
 
     // MARK: - Microphone
@@ -36,8 +38,19 @@ final class PermissionManager: ObservableObject {
     }
 
     func requestMicrophone() async {
-        let granted = await AVCaptureDevice.requestAccess(for: .audio)
-        microphoneGranted = granted
+        let status = AVCaptureDevice.authorizationStatus(for: .audio)
+        if status == .notDetermined {
+            let granted = await AVCaptureDevice.requestAccess(for: .audio)
+            microphoneGranted = granted
+        } else {
+            // Previously denied or restricted — system won't show prompt again, open Settings
+            openMicrophoneSettings()
+        }
+    }
+
+    func openMicrophoneSettings() {
+        let url = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Microphone")!
+        NSWorkspace.shared.open(url)
     }
 
     // MARK: - Accessibility
@@ -59,6 +72,15 @@ final class PermissionManager: ObservableObject {
 
     // MARK: - Polling
 
+    private func startMicrophonePolling() {
+        microphoneTimer?.invalidate()
+        microphoneTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { [weak self] _ in
+            Task { @MainActor [weak self] in
+                self?.checkMicrophone()
+            }
+        }
+    }
+
     /// Accessibility permission changes are not observable via notification.
     /// Poll every 2 seconds to detect changes.
     private func startAccessibilityPolling() {
@@ -73,5 +95,7 @@ final class PermissionManager: ObservableObject {
     func stopPolling() {
         accessibilityTimer?.invalidate()
         accessibilityTimer = nil
+        microphoneTimer?.invalidate()
+        microphoneTimer = nil
     }
 }

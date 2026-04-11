@@ -27,7 +27,9 @@ Inspired by [Typeless](https://www.typeless.com/).
    git clone https://github.com/scinttt/open-typeless-formac.git
    ```
 3. Open `OpenTypeless.xcodeproj` in Xcode
-4. Press **Cmd+R** to build and run
+4. Set up signing: Select the `OpenTypeless` target → **Signing & Capabilities** → Check **"Automatically manage signing"** → Select your **Personal Team** → Set Signing Certificate to **"Sign to Run Locally"**
+   > This keeps your Accessibility permission across rebuilds and avoids microphone permission issues. No paid Apple Developer account needed — a free Apple ID works.
+5. Press **Cmd+R** to build and run
 
 ### 2. Find the App
 
@@ -39,7 +41,7 @@ On first launch, you'll be prompted to grant:
 - **Microphone** — for recording your voice
 - **Accessibility** — for the global hotkey and text insertion
 
-> After each build, you need to grant Accessibility again: go to System Settings > Privacy & Security > Accessibility, remove the old entry with the minus (-) button, then click "Grant Access" in the app to re-add it.
+> If you set up signing in step 1, Accessibility permission persists across rebuilds. Otherwise, after each build you need to re-grant: go to System Settings > Privacy & Security > Accessibility, remove the old entry with the minus (-) button, then click "Grant Access" in the app to re-add it.
 
 ### 4. Configure API Key
 

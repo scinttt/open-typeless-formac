@@ -27,7 +27,9 @@
    git clone https://github.com/scinttt/open-typeless-formac.git
    ```
 3. 用 Xcode 打开 `OpenTypeless.xcodeproj`
-4. 按 **Cmd+R** 编译运行
+4. 设置签名：选择 `OpenTypeless` target → **Signing & Capabilities** → 勾选 **"Automatically manage signing"** → 选择你的 **Personal Team** → Signing Certificate 选择 **"Sign to Run Locally"**
+   > 这样重新编译后辅助功能权限不会失效，也不会出现麦克风权限问题。不需要付费 Apple Developer 账号，免费 Apple ID 就行。
+5. 按 **Cmd+R** 编译运行
 
 ### 2. 找到应用
 
@@ -39,7 +41,7 @@
 - **麦克风** — 用于录音
 - **辅助功能** — 用于全局快捷键和文字插入
 
-> 每次重新编译后，需要重新授权辅助功能：前往系统设置 > 隐私与安全性 > 辅助功能，用减号（-）删掉旧条目，然后在 app 中点击"授权"重新添加。
+> 如果已在第 1 步设置了签名，重新编译后辅助功能权限会保持有效。否则每次重新编译后需要重新授权：前往系统设置 > 隐私与安全性 > 辅助功能，用减号（-）删掉旧条目，然后在 app 中点击"授权"重新添加。
 
 ### 4. 配置 API Key
 
