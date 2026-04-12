@@ -11,6 +11,7 @@ DerivedData/
 *.xcuserstate
 xcuserdata/
 *.xcworkspace/xcuserdata/
+.local/
 
 # Build
 .build/

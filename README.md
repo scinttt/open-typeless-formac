@@ -29,6 +29,9 @@ Inspired by [Typeless](https://www.typeless.com/).
 3. Open `OpenTypeless.xcodeproj` in Xcode
 4. Set up signing: Select the `OpenTypeless` target → **Signing & Capabilities** → Check **"Automatically manage signing"** → Select your **Personal Team** → Set Signing Certificate to **"Sign to Run Locally"**
    > This keeps your Accessibility permission across rebuilds and avoids microphone permission issues. No paid Apple Developer account needed — a free Apple ID works.
+   >
+   > If you regenerate the project with `xcodegen generate`, Xcode may clear the local signing selection in the UI. In that case, select your Personal Team again, or build from the command line with:
+   > `DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcodebuild -project OpenTypeless.xcodeproj -scheme OpenTypeless -destination 'platform=macOS' DEVELOPMENT_TEAM=YOUR_TEAM_ID CODE_SIGN_STYLE=Automatic CODE_SIGN_IDENTITY='-' build`
 5. Press **Cmd+R** to build and run
 
 ### 2. Find the App

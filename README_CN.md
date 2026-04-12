@@ -29,6 +29,9 @@
 3. 用 Xcode 打开 `OpenTypeless.xcodeproj`
 4. 设置签名：选择 `OpenTypeless` target → **Signing & Capabilities** → 勾选 **"Automatically manage signing"** → 选择你的 **Personal Team** → Signing Certificate 选择 **"Sign to Run Locally"**
    > 这样重新编译后辅助功能权限不会失效，也不会出现麦克风权限问题。不需要付费 Apple Developer 账号，免费 Apple ID 就行。
+   >
+   > 如果你执行了 `xcodegen generate` 重新生成工程，Xcode 里的本地签名选择可能会被清掉。这时重新选择一次 Personal Team，或者直接用命令行编译：
+   > `DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcodebuild -project OpenTypeless.xcodeproj -scheme OpenTypeless -destination 'platform=macOS' DEVELOPMENT_TEAM=你的_TEAM_ID CODE_SIGN_STYLE=Automatic CODE_SIGN_IDENTITY='-' build`
 5. 按 **Cmd+R** 编译运行
 
 ### 2. 找到应用
