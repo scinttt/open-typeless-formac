@@ -27,12 +27,7 @@ Inspired by [Typeless](https://www.typeless.com/).
    git clone https://github.com/ryrenz/open-typeless-formac.git
    ```
 3. Open `OpenTypeless.xcodeproj` in Xcode
-4. Set up signing: Select the `OpenTypeless` target → **Signing & Capabilities** → Check **"Automatically manage signing"** → Select your **Personal Team** → Set Signing Certificate to **"Sign to Run Locally"**
-   > This keeps your Accessibility permission across rebuilds and avoids microphone permission issues. No paid Apple Developer account needed — a free Apple ID works.
-   >
-   > If you regenerate the project with `xcodegen generate`, Xcode may clear the local signing selection in the UI. In that case, select your Personal Team again, or build from the command line with:
-   > `DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcodebuild -project OpenTypeless.xcodeproj -scheme OpenTypeless -destination 'platform=macOS' DEVELOPMENT_TEAM=YOUR_TEAM_ID CODE_SIGN_STYLE=Automatic CODE_SIGN_IDENTITY='-' build`
-5. Press **Cmd+R** to build and run
+4. Press **Cmd+R** to build and run
 
 ### 2. Find the App
 
@@ -44,7 +39,26 @@ On first launch, you'll be prompted to grant:
 - **Microphone** — for recording your voice
 - **Accessibility** — for the global hotkey and text insertion
 
-> If you set up signing in step 1, Accessibility permission persists across rebuilds. Otherwise, after each build you need to re-grant: go to System Settings > Privacy & Security > Accessibility, remove the old entry with the minus (-) button, then click "Grant Access" in the app to re-add it.
+> If you use stable local signing, Accessibility permission usually persists across rebuilds. Otherwise, after each build you may need to re-grant: go to System Settings > Privacy & Security > Accessibility, remove the old entry with the minus (-) button, then click "Grant Access" in the app to re-add it.
+
+If you do not want to remove and re-add Accessibility permission after every rebuild, you can use stable local signing:
+
+```bash
+DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer \
+xcodebuild -project OpenTypeless.xcodeproj \
+  -scheme OpenTypeless \
+  -destination 'platform=macOS' \
+  DEVELOPMENT_TEAM=YOUR_TEAM_ID \
+  CODE_SIGN_STYLE=Automatic \
+  CODE_SIGN_IDENTITY='-' \
+  build
+```
+
+- `YOUR_TEAM_ID` must be your real Apple Team ID. A placeholder like `123` will not work.
+- You can find it in Xcode: `Xcode > Settings > Accounts`, select your Apple ID, then open your team details.
+- Or run this on macOS and use the `OU=` value from the certificate subject:
+  `security find-certificate -a -c "Apple Development" -p | openssl x509 -noout -subject`
+- This is optional, but it makes local rebuilds much less likely to break Accessibility permission.
 
 ### 4. Configure API Key
 

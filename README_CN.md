@@ -27,12 +27,7 @@
    git clone https://github.com/ryrenz/open-typeless-formac.git
    ```
 3. 用 Xcode 打开 `OpenTypeless.xcodeproj`
-4. 设置签名：选择 `OpenTypeless` target → **Signing & Capabilities** → 勾选 **"Automatically manage signing"** → 选择你的 **Personal Team** → Signing Certificate 选择 **"Sign to Run Locally"**
-   > 这样重新编译后辅助功能权限不会失效，也不会出现麦克风权限问题。不需要付费 Apple Developer 账号，免费 Apple ID 就行。
-   >
-   > 如果你执行了 `xcodegen generate` 重新生成工程，Xcode 里的本地签名选择可能会被清掉。这时重新选择一次 Personal Team，或者直接用命令行编译：
-   > `DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcodebuild -project OpenTypeless.xcodeproj -scheme OpenTypeless -destination 'platform=macOS' DEVELOPMENT_TEAM=你的_TEAM_ID CODE_SIGN_STYLE=Automatic CODE_SIGN_IDENTITY='-' build`
-5. 按 **Cmd+R** 编译运行
+4. 按 **Cmd+R** 编译运行
 
 ### 2. 找到应用
 
@@ -44,7 +39,26 @@
 - **麦克风** — 用于录音
 - **辅助功能** — 用于全局快捷键和文字插入
 
-> 如果已在第 1 步设置了签名，重新编译后辅助功能权限会保持有效。否则每次重新编译后需要重新授权：前往系统设置 > 隐私与安全性 > 辅助功能，用减号（-）删掉旧条目，然后在 app 中点击"授权"重新添加。
+> 如果你使用了稳定的本地签名，重新编译后 Accessibility 权限通常会保持有效。否则每次重新编译后你可能仍需要重新授权：前往系统设置 > 隐私与安全性 > 辅助功能，用减号（-）删掉旧条目，然后在 app 中点击"授权"重新添加。
+
+如果你不想每次重新编译后都手动删除并重新添加 Accessibility 权限，可以参考下面的本地签名配置：
+
+```bash
+DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer \
+xcodebuild -project OpenTypeless.xcodeproj \
+  -scheme OpenTypeless \
+  -destination 'platform=macOS' \
+  DEVELOPMENT_TEAM=YOUR_TEAM_ID \
+  CODE_SIGN_STYLE=Automatic \
+  CODE_SIGN_IDENTITY='-' \
+  build
+```
+
+- `YOUR_TEAM_ID` 必须是你自己的真实 Apple Team ID，随便写 `123` 这种占位值肯定不行。
+- 可以在 Xcode 里找：`Xcode > Settings > Accounts`，选中你的 Apple ID 后查看 team 信息。
+- 也可以在 macOS 里执行下面这条命令，取证书 subject 里的 `OU=` 值：
+  `security find-certificate -a -c "Apple Development" -p | openssl x509 -noout -subject`
+- 这不是必需步骤，但它能显著降低本地重编译后 Accessibility 权限失效的概率。
 
 ### 4. 配置 API Key
 

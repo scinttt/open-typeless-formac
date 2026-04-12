@@ -42,8 +42,8 @@ struct L {
     var granted: String { lang == .zh ? "已授权" : "Granted" }
     var accessibilityHint: String {
         lang == .zh
-            ? "授权后如未生效，请在系统设置中删除旧条目后重新授权。"
-            : "After granting, remove the old entry and re-add via Grant Access."
+            ? "如果重编译后权限反复失效，请先配置稳定的本地签名。README 里有具体说明。"
+            : "If permission keeps resetting after rebuilds, configure stable local signing first. See README."
     }
 
     // Hotkey
