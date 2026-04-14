@@ -41,26 +41,6 @@ On first launch, you'll be prompted to grant:
 
 > If you use stable local signing, Accessibility permission usually persists across rebuilds. Otherwise, after each build you may need to re-grant: go to System Settings > Privacy & Security > Accessibility, remove the old entry with the minus (-) button, then click "Grant Access" in the app to re-add it.
 
-If you do not want to remove and re-add Accessibility permission after every rebuild, you can use stable local signing:
-
-```bash
-DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer \
-  xcodebuild -project OpenTypeless.xcodeproj \
-  -scheme OpenTypeless \
-  -destination 'platform=macOS' \
-  DEVELOPMENT_TEAM=YOUR_TEAM_ID \
-  CODE_SIGN_STYLE=Automatic \
-  CODE_SIGN_IDENTITY='-' \
-  build
-```
-
-- `YOUR_TEAM_ID` must be your real Apple Team ID. A placeholder like `123` will not work.
-- You can find it in Xcode: `Xcode > Settings > Accounts`, select your Apple ID, then open your team details.
-- Or run this on macOS and use the `OU=` value from the certificate subject:
-  `security find-certificate -a -c "Apple Development" -p | openssl x509 -noout -subject`
-- `CODE_SIGN_IDENTITY='-'` matches Xcode's `Sign to Run Locally` path for this project.
-- This is optional, but it makes local rebuilds much less likely to break Accessibility permission.
-
 ### 4. Configure API Key
 
 Click the menu bar icon → **Settings** → go to the **API** tab:
@@ -119,7 +99,7 @@ open-typeless uses the `gpt-4o-mini-transcribe` model by default.
 
 | Problem | Solution |
 |---------|----------|
-| Hotkey doesn't work | Check Accessibility permission; remove old entry and re-add in System Settings |
+| Hotkey doesn't work | Check Accessibility permission; after rebuilds, remove the old entry and re-add it in System Settings |
 | "API key not configured" | Enter your key in Settings → API tab |
 | No audio input | Check System Settings > Sound > Input; make sure a microphone is selected |
 | Text not inserting | Click into a text field before stopping the recording |

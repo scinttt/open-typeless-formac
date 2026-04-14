@@ -39,27 +39,7 @@
 - **麦克风** — 用于录音
 - **辅助功能** — 用于全局快捷键和文字插入
 
-> 如果你使用了稳定的本地签名，重新编译后 Accessibility 权限通常会保持有效。否则每次重新编译后你可能仍需要重新授权：前往系统设置 > 隐私与安全性 > 辅助功能，用减号（-）删掉旧条目，然后在 app 中点击"授权"重新添加。
-
-如果你不想每次重新编译后都手动删除并重新添加 Accessibility 权限，可以参考下面的本地签名配置：
-
-```bash
-DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer \
-xcodebuild -project OpenTypeless.xcodeproj \
-  -scheme OpenTypeless \
-  -destination 'platform=macOS' \
-  DEVELOPMENT_TEAM=YOUR_TEAM_ID \
-  CODE_SIGN_STYLE=Automatic \
-  CODE_SIGN_IDENTITY='-' \
-  build
-```
-
-- `YOUR_TEAM_ID` 必须是你自己的真实 Apple Team ID，随便写 `123` 这种占位值肯定不行。
-- 可以在 Xcode 里找：`Xcode > Settings > Accounts`，选中你的 Apple ID 后查看 team 信息。
-- 也可以在 macOS 里执行下面这条命令，取证书 subject 里的 `OU=` 值：
-  `security find-certificate -a -c "Apple Development" -p | openssl x509 -noout -subject`
-- `CODE_SIGN_IDENTITY='-'` 对应这个项目里 Xcode 的 `Sign to Run Locally` 路径。
-- 这不是必需步骤，但它能显著降低本地重编译后 Accessibility 权限失效的概率。
+> 重新编译后如果 Accessibility 权限失效，前往系统设置 > 隐私与安全性 > 辅助功能，用减号（-）删掉旧条目，然后在 app 中点击“授权”重新添加。
 
 ### 4. 配置 API Key
 
@@ -119,7 +99,7 @@ OpenAI API key 获取地址：[platform.openai.com/api-keys](https://platform.op
 
 | 问题 | 解决方案 |
 |------|---------|
-| 快捷键不工作 | 检查辅助功能权限；在系统设置中删掉旧条目重新添加 |
+| 快捷键不工作 | 检查辅助功能权限；重新编译后在系统设置中删掉旧条目再重新添加 |
 | "API key not configured" | 在设置 → API 标签页中输入 API key |
 | 没有音频输入 | 检查系统设置 > 声音 > 输入，确保选择了麦克风 |
 | 文字没有插入 | 停止录音前先点击目标输入框 |
