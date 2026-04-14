@@ -45,7 +45,7 @@ If you do not want to remove and re-add Accessibility permission after every reb
 
 ```bash
 DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer \
-xcodebuild -project OpenTypeless.xcodeproj \
+  xcodebuild -project OpenTypeless.xcodeproj \
   -scheme OpenTypeless \
   -destination 'platform=macOS' \
   DEVELOPMENT_TEAM=YOUR_TEAM_ID \
@@ -58,6 +58,7 @@ xcodebuild -project OpenTypeless.xcodeproj \
 - You can find it in Xcode: `Xcode > Settings > Accounts`, select your Apple ID, then open your team details.
 - Or run this on macOS and use the `OU=` value from the certificate subject:
   `security find-certificate -a -c "Apple Development" -p | openssl x509 -noout -subject`
+- `CODE_SIGN_IDENTITY='-'` matches Xcode's `Sign to Run Locally` path for this project.
 - This is optional, but it makes local rebuilds much less likely to break Accessibility permission.
 
 ### 4. Configure API Key

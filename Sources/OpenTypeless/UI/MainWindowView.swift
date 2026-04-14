@@ -31,6 +31,7 @@ struct L {
     // Tabs
     var hotkeys: String { lang == .zh ? "快捷键" : "Hotkeys" }
     var dictionary: String { lang == .zh ? "词汇表" : "Dictionary" }
+    var history: String { lang == .zh ? "历史记录" : "History" }
     var api: String { "API" }
     var test: String { lang == .zh ? "测试" : "Test" }
 
@@ -90,6 +91,7 @@ struct L {
 enum SettingsTab: String, CaseIterable {
     case hotkeys
     case dictionary
+    case history
     case api
     case test
 
@@ -97,6 +99,7 @@ enum SettingsTab: String, CaseIterable {
         switch self {
         case .hotkeys: return l.hotkeys
         case .dictionary: return l.dictionary
+        case .history: return l.history
         case .api: return l.api
         case .test: return l.test
         }
@@ -147,6 +150,8 @@ struct MainWindowView: View {
                     .environmentObject(permissionManager)
             case .dictionary:
                 DictionaryTabView(l: l)
+            case .history:
+                HistoryTabView(l: l)
             case .api:
                 APITabView(l: l)
             case .test:
@@ -165,6 +170,7 @@ struct MainWindowView: View {
         switch tab {
         case .hotkeys: return "keyboard"
         case .dictionary: return "text.book.closed"
+        case .history: return "clock.arrow.circlepath"
         case .api: return "key"
         case .test: return "mic"
         }

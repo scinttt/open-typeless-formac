@@ -5,6 +5,7 @@ final class DictationSessionCoordinator: ObservableObject {
     private let audioRecorder = AudioRecorder()
     let transcriptionService = TranscriptionService()
     private let dictionaryStore: DictionaryStore
+    private let historyStore: HistoryStore
     private let popupController = ResultPopupController()
     private let overlay = ProgressOverlayController.shared
     private var outputSnapshot: OutputTargetSnapshot?
@@ -16,9 +17,14 @@ final class DictationSessionCoordinator: ObservableObject {
 
     @Published var appState: AppState
 
-    init(appState: AppState, dictionaryStore: DictionaryStore = .shared) {
+    init(
+        appState: AppState,
+        dictionaryStore: DictionaryStore = .shared,
+        historyStore: HistoryStore = .shared
+    ) {
         self.appState = appState
         self.dictionaryStore = dictionaryStore
+        self.historyStore = historyStore
     }
 
     func preloadModel() {
@@ -78,12 +84,7 @@ final class DictationSessionCoordinator: ObservableObject {
         overlay.update(state: .transcribing)
 
         Task {
-            do {
-                await processRecording()
-            } catch {
-                appState.status = .idle
-                overlay.dismiss()
-            }
+            await processRecording()
         }
     }
 
@@ -101,6 +102,11 @@ final class DictationSessionCoordinator: ObservableObject {
 
         defer { AudioRecorder.cleanUp(url: audioURL) }
 
+        if audioRecorder.shouldSkipTranscriptionForSilence() {
+            handleNoResult()
+            return
+        }
+
         let transcribedText: String
         do {
             transcribedText = try await transcriptionService.transcribe(
@@ -108,15 +114,30 @@ final class DictationSessionCoordinator: ObservableObject {
                 prompt: makeTranscriptionPrompt()
             )
         } catch {
+            if case TranscriptionError.noResult = error {
+                handleNoResult()
+                return
+            }
             appState.status = .idle
             showError("Transcription failed: \(error.localizedDescription)")
             return
         }
 
+        let activeEntries = dictionaryStore.activeEntries()
         let correctedText = DictionaryCorrectionEngine.apply(
             to: transcribedText,
-            entries: dictionaryStore.activeEntries()
+            entries: activeEntries
         )
+        if DictionaryHallucinationFilter.shouldSuppress(
+            transcribedText: transcribedText,
+            correctedText: correctedText,
+            peakLevel: audioRecorder.observedPeakLevel(),
+            entries: activeEntries
+        ) {
+            handleNoResult()
+            return
+        }
+        recordHistory(finalText: correctedText)
 
         // Deliver result
         overlay.dismiss()
@@ -151,6 +172,16 @@ final class DictationSessionCoordinator: ObservableObject {
     func handlePostInsertionObservation(originalText: String) {
         _ = originalText
         // Reserved for future auto-learn hooks.
+    }
+
+    func recordHistory(finalText: String) {
+        historyStore.append(text: finalText)
+    }
+
+    private func handleNoResult() {
+        overlay.dismiss()
+        appState.status = .idle
+        outputSnapshot = nil
     }
 
     // MARK: - Error handling

@@ -16,9 +16,12 @@ enum AudioRecorderError: Error, LocalizedError {
 }
 
 final class AudioRecorder: NSObject, AVAudioRecorderDelegate {
+    private static let silenceThreshold: Float = 0.08
+
     private var recorder: AVAudioRecorder?
     private var recordingURL: URL?
     private var isRecording = false
+    private var peakObservedLevel: Float = 0
 
     func startRecording() throws {
         guard !isRecording else { return }
@@ -58,6 +61,7 @@ final class AudioRecorder: NSObject, AVAudioRecorderDelegate {
         recorder = rec
         recordingURL = url
         isRecording = true
+        peakObservedLevel = 0
         print("[AudioRecorder] Recording started: \(url.lastPathComponent)")
     }
 
@@ -89,6 +93,7 @@ final class AudioRecorder: NSObject, AVAudioRecorderDelegate {
         recorder = nil
         recordingURL = nil
         isRecording = false
+        peakObservedLevel = 0
     }
 
     /// Get current audio level (0.0 - 1.0). Call periodically during recording.
@@ -97,7 +102,21 @@ final class AudioRecorder: NSObject, AVAudioRecorderDelegate {
         rec.updateMeters()
         let dB = rec.averagePower(forChannel: 0) // -160 to 0
         let normalized = max(0, (dB + 50) / 50) // map -50...0 dB to 0...1
-        return min(normalized, 1.0)
+        let level = min(normalized, 1.0)
+        peakObservedLevel = max(peakObservedLevel, level)
+        return level
+    }
+
+    func shouldSkipTranscriptionForSilence() -> Bool {
+        Self.isSilentRecording(peakLevel: peakObservedLevel)
+    }
+
+    func observedPeakLevel() -> Float {
+        peakObservedLevel
+    }
+
+    static func isSilentRecording(peakLevel: Float) -> Bool {
+        peakLevel < silenceThreshold
     }
 
     static func cleanUp(url: URL) {

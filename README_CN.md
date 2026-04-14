@@ -58,6 +58,7 @@ xcodebuild -project OpenTypeless.xcodeproj \
 - 可以在 Xcode 里找：`Xcode > Settings > Accounts`，选中你的 Apple ID 后查看 team 信息。
 - 也可以在 macOS 里执行下面这条命令，取证书 subject 里的 `OU=` 值：
   `security find-certificate -a -c "Apple Development" -p | openssl x509 -noout -subject`
+- `CODE_SIGN_IDENTITY='-'` 对应这个项目里 Xcode 的 `Sign to Run Locally` 路径。
 - 这不是必需步骤，但它能显著降低本地重编译后 Accessibility 权限失效的概率。
 
 ### 4. 配置 API Key

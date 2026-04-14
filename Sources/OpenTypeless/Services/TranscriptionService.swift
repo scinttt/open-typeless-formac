@@ -30,6 +30,8 @@ enum APIProvider: String, CaseIterable, Identifiable {
 }
 
 final class TranscriptionService {
+    private static let promptEchoPrefix = "Prefer these spellings when they match the audio:"
+
     static var apiKey: String {
         get { UserDefaults.standard.string(forKey: "apiKey")
             ?? ProcessInfo.processInfo.environment["AI_BUILDER_TOKEN"]
@@ -105,8 +107,27 @@ final class TranscriptionService {
             )
         }
 
+        guard !Self.looksLikePromptEcho(text, prompt: prompt) else {
+            throw TranscriptionError.noResult
+        }
+
         guard !text.isEmpty else { throw TranscriptionError.noResult }
         return text
+    }
+
+    static func looksLikePromptEcho(_ text: String, prompt: String?) -> Bool {
+        let normalizedText = normalizeForPromptEchoCheck(text)
+        guard !normalizedText.isEmpty else { return false }
+
+        guard let prompt else { return false }
+        let normalizedPrompt = normalizeForPromptEchoCheck(prompt)
+        guard !normalizedPrompt.isEmpty else { return false }
+
+        if normalizedText == normalizedPrompt {
+            return true
+        }
+
+        return normalizedText.hasPrefix(normalizeForPromptEchoCheck(promptEchoPrefix))
     }
 
     private func buildClient(apiKey: String) -> OpenAI {
@@ -123,5 +144,13 @@ final class TranscriptionService {
             )
             return OpenAI(configuration: config)
         }
+    }
+
+    private static func normalizeForPromptEchoCheck(_ text: String) -> String {
+        text
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .replacingOccurrences(of: "\\s+", with: " ", options: .regularExpression)
+            .trimmingCharacters(in: CharacterSet(charactersIn: " \n\t\r.,;:!?"))
+            .folding(options: [.caseInsensitive, .diacriticInsensitive], locale: .current)
     }
 }
