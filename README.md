@@ -15,6 +15,8 @@ Inspired by [Typeless](https://www.typeless.com/).
 - **Double-tap cancel**: Quickly press the hotkey twice to cancel recording
 - **Multiple models**: Choose between gpt-4o-mini-transcribe, gpt-4o-transcribe, or whisper-1
 - **Custom API endpoint**: Works with any OpenAI-compatible API (Groq, Together AI, etc.)
+- **Dictionary**: Add proper nouns (product names, people, jargon) that are often misrecognized. Entries are sent to the model as transcription hints so it prefers the correct spelling, and silent hallucinations of dictionary terms are filtered out.
+- **History**: Every completed transcription is saved locally. Browse past results in the History tab, copy any entry with one click, and choose a retention policy (forever / 1 month / 1 week / 24 hours).
 - **Chinese/English UI**: Switch UI language in Settings
 
 ## Quick Start
